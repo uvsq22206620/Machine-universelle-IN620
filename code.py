@@ -23,7 +23,7 @@ class MachineTuring:
                     continue
                 ligne_propre.append(ligne)
 
-            name = None
+            name = None 
             init = None
             accept = None
             for ligne in ligne_propre:
@@ -44,9 +44,9 @@ class MachineTuring:
             )
 
 
-#mt = MachineTuring(
-#    alphabet=["0","1"], 
-#    transition={("q0", "0") : ("q1", "1", "R"), ("q0", "0") : ("q0", "1", "R")}, 
-#    etat_final= "q1", 
-#    etat_init= "q0")
-#
+mt = MachineTuring(
+    alphabet=["0","1"], 
+    transition={("q0", "0") : ("q1", "1", "R"), ("q0", "0") : ("q0", "1", "R")}, 
+    etat_final= "q1", 
+    etat_init= "q0")
+
