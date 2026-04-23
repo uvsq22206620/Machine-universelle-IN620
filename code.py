@@ -16,20 +16,7 @@ class MT:
         self.etat_final = etat_final
 
 
-<<<<<<< HEAD
-            name = None 
-            init = None
-            accept = None
-            for ligne in ligne_propre:
-                if ligne.startswith("name:"):
-                    name = ligne.split(":")[1].strip()
-                elif ligne.startswith("init:"):
-                    init = ligne.split(":")[1].strip()
-                elif ligne.startswith("accept:"):
-                    accept = ligne.split(":")[1].strip()
-=======
-def init_mt(nom_fichier):
->>>>>>> 8a1f0f2b024e012ce926fdac155fdddae916537e
+def init_mt(nom_fichier): #question 2
 
     with open(nom_fichier, "r") as fichier:
         lignes = fichier.readlines()
@@ -103,14 +90,6 @@ def init_mt(nom_fichier):
     )
 
 
-<<<<<<< HEAD
-mt = MachineTuring(
-    alphabet=["0","1"], 
-    transition={("q0", "0") : ("q1", "1", "R"), ("q0", "0") : ("q0", "1", "R")}, 
-    etat_final= "q1", 
-    etat_init= "q0")
-
-=======
 def config_init(machine, mot): #fonction qui crée la configuration initiale à partir de la machine et du mot d'entrée
     ruban = list(mot)
     
@@ -120,37 +99,26 @@ def config_init(machine, mot): #fonction qui crée la configuration initiale à 
         ruban=ruban
     )
 
-# Exemple d'utilisation q2:
-#print("=== Test Question 2 ===")
-ma_machine = init_mt("division3.txt")
-#print(f"Machine chargée: {ma_machine.etat_init} -> {ma_machine.etat_final}")
-#print(f"Alphabet: {ma_machine.alphabet}")
-#print(f"Alphabet travail: {ma_machine.alphabet_travail}")
-#print(f"Nombre de transitions: {len(ma_machine.transition)}")
-#print()
-#
-#config = config_init(ma_machine, "110")
-#print(f"Configuration initiale:")
-#print(config)
 
-
-def pas_calcul(machine, configuration):
+def pas_calcul(machine, configuration): #question 3
     if configuration.etat == machine.etat_final:
         return None
     
-    elif configuration.pos < 0 or configuration.pos >= len(configuration.ruban):
-        return None
-    
-    symbole_lu = configuration.ruban[configuration.pos]
+    if configuration.pos < 0 or configuration.pos >= len(configuration.ruban):
+        symbole_lu = '_'
+    else :
+        symbole_lu = configuration.ruban[configuration.pos]
 
     if (configuration.etat, symbole_lu) not in machine.transition:
-        return None
-    
+            return None
+
     etat_suivant, symbole_ecrit, direction = machine.transition[(configuration.etat, symbole_lu)]
 
     nv_ruban = configuration.ruban.copy()
-    nv_ruban[configuration.pos] = symbole_ecrit
 
+    if configuration.pos < len(nv_ruban):
+        nv_ruban[configuration.pos] = symbole_ecrit
+    
     nv_pos = configuration.pos
     if direction == "R":
         nv_pos += 1
@@ -163,15 +131,37 @@ def pas_calcul(machine, configuration):
         ruban=nv_ruban
     )
 
-# Exemple d'utilisation Question 3:
-print("\n=== Test Question 3 ===")
-config_courante = config_init(ma_machine, "110")
-print(f"Configuration initiale: {config_courante}")
 
-# Exécuter un pas
-config_suivante = pas_calcul(ma_machine, config_courante)
-if config_suivante:
-    print(f"Après 1 pas: {config_suivante}")
-else:
-    print("Pas d'étape suivante (état final ou erreur)")
->>>>>>> 8a1f0f2b024e012ce926fdac155fdddae916537e
+def simulation(mot, machine): 
+    configuration = config_init(machine, mot) 
+
+    if configuration.etat == machine.etat_final:
+        return True
+    
+    etape = 0
+    max_etape = 1000
+
+    while configuration.etat != machine.etat_final and etape < max_etape:
+        configuration_suivante = pas_calcul(machine, configuration)
+
+        if configuration_suivante is None:
+            return False
+        
+        configuration = configuration_suivante
+        etape += 1
+    
+    if configuration.etat == machine.etat_final:
+        return True
+    else:
+        return False
+        
+# Test rapide Question 4
+#machine = init_mt("dec2bin.txt")
+#
+#print("Test simulation:")
+#print(f"simulation('5', machine) = {simulation('5', machine)}")  
+#print(f"simulation('8', machine) = {simulation('8', machine)}")  
+#print(f"simulation('10', machine) = {simulation('10', machine)}")       
+        
+
+#def test_q1():
