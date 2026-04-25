@@ -132,29 +132,47 @@ def pas_calcul(machine, configuration): #question 3
     )
 
 
-def simulation(mot, machine): 
+def simulation(mot, machine): #question 4
     configuration = config_init(machine, mot) 
 
     if configuration.etat == machine.etat_final:
-        return True
+        return True, historique
     
-    etape = 0
-    max_etape = 1000
+    historique = [configuration]
 
-    while configuration.etat != machine.etat_final and etape < max_etape:
+    while configuration.etat != machine.etat_final:
         configuration_suivante = pas_calcul(machine, configuration)
 
         if configuration_suivante is None:
-            return False
+            return False, historique
         
         configuration = configuration_suivante
-        etape += 1
-    
-    if configuration.etat == machine.etat_final:
-        return True
-    else:
-        return False
-        
+        historique.append(configuration)
+
+        if configuration.etat == machine.etat_final:
+            return True, historique
+        else:
+            return False, historique
+
+
+def affiche_config(configurations): #question 5
+    for i in range (len(configurations)):
+        config = configurations[i]
+        print(f"étape {i} : {config}")
+
+
+
+machine = init_mt("division3.txt")
+accepte, configs = simulation("110", machine)
+print(f"Acceptée: {accepte}")
+affiche_config(configs)
+
+machine = init_mt("dec2bin.txt")
+accepte, configs = simulation("5", machine)
+print(f"acceptée : {accepte}")
+affiche_config(configs)
+
+
 # Test rapide Question 4
 #machine = init_mt("dec2bin.txt")
 #
@@ -164,4 +182,8 @@ def simulation(mot, machine):
 #print(f"simulation('10', machine) = {simulation('10', machine)}")       
         
 
-#def test_q1():
+# def test_q1():
+# def test_q2():
+# def test_q3():
+# def test_q4():
+# def test_q5():

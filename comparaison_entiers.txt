@@ -1,0 +1,10 @@
+// Input : deux nombres binaires
+// Output : accepte si x<y, rejette sinon
+// Example : "1#11 accepte"
+//           "11#1 rejette (2b>1b)"
+//           "1#1 accepte"
+
+
+name : comparaison de deux nombres binaires
+init : q0
+accept : qaccept
