@@ -6,5 +6,6 @@
 
 
 name : comparaison de deux nombres binaires
-init : q0
-accept : qaccept
+init: q0
+accept: qAccept
+

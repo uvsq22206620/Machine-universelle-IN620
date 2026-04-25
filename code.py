@@ -104,10 +104,12 @@ def pas_calcul(machine, configuration): #question 3
     if configuration.etat == machine.etat_final:
         return None
     
-    if configuration.pos < 0 or configuration.pos >= len(configuration.ruban):
-        symbole_lu = '_'
-    else :
-        symbole_lu = configuration.ruban[configuration.pos]
+    while configuration.pos >= len(configuration.ruban):
+        configuration.ruban.append('_')
+    if configuration.pos < 0:
+        return None
+        
+    symbole_lu = configuration.ruban[configuration.pos]
 
     if (configuration.etat, symbole_lu) not in machine.transition:
             return None
@@ -134,11 +136,10 @@ def pas_calcul(machine, configuration): #question 3
 
 def simulation(mot, machine): #question 4
     configuration = config_init(machine, mot) 
+    historique = [configuration]
 
     if configuration.etat == machine.etat_final:
         return True, historique
-    
-    historique = [configuration]
 
     while configuration.etat != machine.etat_final:
         configuration_suivante = pas_calcul(machine, configuration)
@@ -149,11 +150,7 @@ def simulation(mot, machine): #question 4
         configuration = configuration_suivante
         historique.append(configuration)
 
-        if configuration.etat == machine.etat_final:
-            return True, historique
-        else:
-            return False, historique
-
+    return True, historique
 
 def affiche_config(configurations): #question 5
     for i in range (len(configurations)):
@@ -162,16 +159,16 @@ def affiche_config(configurations): #question 5
 
 
 
-machine = init_mt("division3.txt")
-accepte, configs = simulation("110", machine)
-print(f"Acceptée: {accepte}")
-affiche_config(configs)
-
-machine = init_mt("dec2bin.txt")
-accepte, configs = simulation("5", machine)
-print(f"acceptée : {accepte}")
-affiche_config(configs)
-
+#machine = init_mt("division3.txt")
+#accepte, configs = simulation("110", machine)
+#print(f"Acceptée: {accepte}")
+#affiche_config(configs)
+#
+#machine = init_mt("dec2bin.txt")
+#accepte, configs = simulation("5", machine)
+#print(f"acceptée : {accepte}")
+#affiche_config(configs)
+#
 
 # Test rapide Question 4
 #machine = init_mt("dec2bin.txt")
