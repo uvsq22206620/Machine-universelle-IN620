@@ -1,11 +1,159 @@
-// Input : deux nombres binaires
-// Output : accepte si x<y, rejette sinon
-// Example : "1#11 accepte"
-//           "11#1 rejette (2b>1b)"
-//           "1#1 accepte"
+// Comparaison de deux nombres binaires
+// Input : x#y (deux nombres en binaire séparés par #)
+// Output : accepte si x < y, boucle infiniment sinon
+// Examples : "1#11" -> accepte (1 < 3)
+//            "11#1" -> boucle (2 ≥ 1)  
+//            "1#1" -> boucle (1 == 1)
 
-
-name : comparaison de deux nombres binaires
+name: Comparaison de deux nombres binaires
 init: q0
 accept: qAccept
 
+// q0: Aller jusqu'au #
+q0,0
+q0,0,>
+
+q0,1
+q0,1,>
+
+q0,#
+q1,#,>
+
+// q1: Chercher le premier bit non marqué de y
+q1,0
+q2,X,<
+
+q1,1
+q3,X,<
+
+q1,X
+q1,X,>
+
+q1,_
+// y est vide
+q8,_,<
+
+// q2: y[i] = 0, retourner à x
+q2,0
+q2,0,<
+
+q2,1
+q2,1,<
+
+q2,X
+q2,X,<
+
+q2,#
+q4,#,<
+
+// q3: y[i] = 1, retourner à x
+q3,0
+q3,0,<
+
+q3,1
+q3,1,<
+
+q3,X
+q3,X,<
+
+q3,#
+q5,#,<
+
+// q4: Chercher premier x non marqué (y[i] = 0)
+q4,a
+q4,a,<
+
+q4,0
+// x[i] = 0 = y[i]
+q6,a,>
+
+q4,1
+// x[i] = 1 > y[i] = 0, donc x ≥ y
+q10,1,-
+
+q4,_
+// x vide, y pas vide, donc x < y
+qAccept,_,-
+
+// q5: Chercher premier x non marqué (y[i] = 1)
+q5,a
+q5,a,<
+
+q5,0
+// x[i] = 0 < y[i] = 1, donc x < y
+qAccept,0,-
+
+q5,1
+// x[i] = 1 = y[i]
+q7,a,>
+
+q5,_
+// x vide, y pas vide, donc x < y
+qAccept,_,-
+
+// q6: x[i]=0=y[i], aller vers # et continuer
+q6,a
+q6,a,>
+
+q6,0
+q6,0,>
+
+q6,1
+q6,1,>
+
+q6,#
+q1,#,>
+
+// q7: x[i]=1=y[i], aller vers # et continuer
+q7,a
+q7,a,>
+
+q7,0
+q7,0,>
+
+q7,1
+q7,1,>
+
+q7,#
+q1,#,>
+
+// q8: y est vide, vérifier si x aussi vide
+q8,X
+q8,X,<
+
+q8,#
+q9,#,<
+
+// q9: Chercher un bit de x non marqué
+q9,a
+q9,a,<
+
+q9,0
+// x pas vide, donc x ≥ y
+q10,0,-
+
+q9,1
+q10,1,-
+
+q9,_
+// x aussi vide, donc x == y
+q10,_,>
+
+// q10: boucle infinie si x = y ou x > y 
+q10,0
+q10,0,>
+
+q10,1
+q10,1,>
+
+q10,#
+q10,#,>
+
+q10,X
+q10,X,>
+
+q10,a
+q10,a,>
+
+q10,_
+q10,_,>

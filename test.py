@@ -1,14 +1,14 @@
 class Configuration : 
     def __init__(self, etat, positions, rubans):
         self.etat = etat
-        self.positions = positions
-        self.rubans = rubans
+        self.positions = positions  # liste de positions (une par ruban)
+        self.rubans = rubans  # liste de rubans
 
     def __str__(self):
-        return f"Etat : {self.etat}, Positions : {self.positions}, Ruban : {self.rubans}"
+        return f"Etat : {self.etat}, Positions : {self.positions}, Rubans : {self.rubans}"
     
 class MT:
-    def __init__(self, alphabet, alphabet_travail, transition, etat_init, etat_final, nb_rubans):
+    def __init__(self, alphabet, alphabet_travail, transition, etat_init, etat_final, nb_rubans=1):
         self.alphabet = alphabet
         self.alphabet_travail = alphabet_travail
         self.transition = transition
@@ -24,8 +24,11 @@ def init_mt(nom_fichier): #question 2
     
     lignes_propres = [] #récupération des lignes qui ne sont ni des coms ni des lignes vides
     for ligne in lignes:
+        # Enlever les commentaires inline
+        if "//" in ligne:
+            ligne = ligne[:ligne.index("//")]
         ligne = ligne.strip()
-        if not ligne or ligne.startswith("//"):
+        if not ligne:
             continue
         lignes_propres.append(ligne)
     
@@ -38,63 +41,67 @@ def init_mt(nom_fichier): #question 2
         elif ligne.startswith("accept:"):
             etat_final = ligne.split(":")[1].strip()
     
-    transitions = {} #dico de transitions, clé = (etat, symbole_lu), valeur = (etat_suivant, symbole_ecrit, direction)
+    transitions = {} #dico de transitions
     i = 0
-    nb_rubans = None
-
-    while i < len(lignes_propres): #
+    nb_rubans = None  # détection automatique du nombre de rubans
+    
+    while i < len(lignes_propres):
         ligne = lignes_propres[i]
         
-        if ligne.startswith("name:") or ligne.startswith("init:") or ligne.startswith("accept:"): #on ignore nom, init et accept
+        if ligne.startswith("name:") or ligne.startswith("init:") or ligne.startswith("accept:"):
             i += 1
             continue
         
         if "," in ligne: #si la ligne contient une virgule, c'est une ligne de transition
-            partie_lue = ligne.split(",") 
-
-            if nb_rubans is None : 
-                nb_rubans = len(partie_lue) -1
-
-            if len(partie_lue) == nb_rubans +1:
+            partie_lue = ligne.split(",")
+            
+            # Déterminer nb_rubans à partir de la première transition valide
+            if nb_rubans is None:
+                nb_rubans = len(partie_lue) - 1
+            
+            if len(partie_lue) == nb_rubans + 1:
                 etat = partie_lue[0].strip()
-                symbole_lu = tuple(s.strip() for s in partie_lue[1:])
+                symboles_lus = tuple(s.strip() for s in partie_lue[1:])
                 
                 if i + 1 < len(lignes_propres): #on vérifie qu'il y a une ligne suivante pour la suite de la transition
                     ligne_out = lignes_propres[i + 1]
                     partie_ecrite = ligne_out.split(",")
-
-                    if len(partie_ecrite) == 2 * nb_rubans + 1 :
+                    
+                    # Format: état_suiv, symboles_écrits (k), directions (k)
+                    if len(partie_ecrite) == 2 * nb_rubans + 1:
                         etat_suivant = partie_ecrite[0].strip()
-                        symbole_ecrit = [s.strip() for s in partie_ecrite[1:nb_rubans+1]]
-                        direction2base = [d.strip() for d in partie_ecrite[nb_rubans+1:]]
-
-
+                        symboles_ecrits = [s.strip() for s in partie_ecrite[1:nb_rubans+1]]
+                        directions_raw = [d.strip() for d in partie_ecrite[nb_rubans+1:]]
+                        
                         directions = []
-                        for dir in direction2base:    
-                            if dir == ">": #conversion des directions en fonction du format
+                        for direction in directions_raw:
+                            if direction == ">": #conversion des directions en fonction du format
                                 directions.append("R")
-                            elif dir == "<":
+                            elif direction == "<":
                                 directions.append("L")
-                            elif dir == "-":
+                            elif direction == "-":
                                 directions.append("-")
                             else:
-                                directions.append(dir)
+                                directions.append(direction)
                         
-                        cle = (etat, symbole_lu)
-                        transitions[cle] = (etat_suivant, symbole_ecrit, directions) 
+                        # Stocker la transition
+                        cle = (etat, symboles_lus)
+                        transitions[cle] = (etat_suivant, symboles_ecrits, directions)
+                        
                         i += 2
                         continue
         i += 1
-    if nb_rubans is None: 
+    
+    if nb_rubans is None:
         nb_rubans = 1
     
     alphabet = set() #creation de l'alphabet et de l'alphabet de travail à partir des transitions
     alphabet_travail = set()
     
-    for (etat, symbole_lu), (etat_suivant, symbole_ecrit, directions) in transitions.items(): #on parcourt les transitions, on ajoute les symboles lus/écrits dans les alpabets respectifs
-        for sym in symbole_lu:
+    for (etat, symboles_lus), (etat_suivant, symboles_ecrits, directions) in transitions.items():
+        for sym in symboles_lus:
             alphabet_travail.add(sym)
-        for sym in symbole_ecrit:
+        for sym in symboles_ecrits:
             alphabet_travail.add(sym)
     
     alphabet = alphabet_travail.copy() 
@@ -110,10 +117,10 @@ def init_mt(nom_fichier): #question 2
 
 
 def config_init(machine, mot): #fonction qui crée la configuration initiale à partir de la machine et du mot d'entrée
-    rubans = [list(mot)] + [[] for _ in range(machine.nb_rubans -1)]
+    rubans = [list(mot)] + [[] for _ in range(machine.nb_rubans - 1)]
     positions = [0] * machine.nb_rubans
     
-    return Configuration( # retourne une instance de la classe Configuration avec l'état initial de la machine, la position 0 et le ruban avec le mot d'entrée
+    return Configuration( # retourne une instance de la classe Configuration avec l'état initial de la machine, les positions et les rubans
         etat=machine.etat_init,
         positions=positions,
         rubans=rubans
@@ -124,38 +131,44 @@ def pas_calcul(machine, configuration): #question 3
     if configuration.etat == machine.etat_final:
         return None
     
+    # Créer des copies AVANT de modifier
     nv_rubans = [r.copy() for r in configuration.rubans]
     nv_positions = configuration.positions.copy()
-    symbole_lu = []
-
+    symboles_lus = []
+    
+    # Lire sur chaque ruban
     for i in range(machine.nb_rubans):
         pos = nv_positions[i]
         ruban = nv_rubans[i]
-
+        
+        # Étendre le ruban
         while pos >= len(ruban):
             ruban.append('_')
         if pos < 0:
-            ruban.insert(0,'_')
+            ruban.insert(0, '_')
             nv_positions[i] += 1
-            pos = nv_positions[i]
-
-        symbole_lu.append(ruban[pos])
-
-    cle = (configuration.etat, tuple(symbole_lu))
+            pos = nv_positions[i]  # ✅ CORRECTION : relire à la nouvelle position
+        
+        symboles_lus.append(ruban[pos])
+    
+    # Créer la clé de transition
+    cle = (configuration.etat, tuple(symboles_lus))
+    
     if cle not in machine.transition:
         return None
-    
-    etat_suivant, symbole_ecrit, direction = machine.transition[cle]
-    
+
+    etat_suivant, symboles_ecrits, directions = machine.transition[cle]
+
+    # Écrire et déplacer les têtes
     for i in range(machine.nb_rubans):
         if nv_positions[i] < len(nv_rubans[i]):
-            nv_rubans[i][nv_positions[i]] = symbole_ecrit[i]
+            nv_rubans[i][nv_positions[i]] = symboles_ecrits[i]
         
         nv_pos = nv_positions[i]
-        if direction[i] == "R":
-            nv_positions[i] += 1
-        elif direction[i] == "L":
-            nv_positions[i] -= 1
+        if directions[i] == "R":
+            nv_positions[i] = nv_pos + 1
+        elif directions[i] == "L":
+            nv_positions[i] = nv_pos - 1
 
     return Configuration(
         etat=etat_suivant,
@@ -182,8 +195,7 @@ def simulation(mot, machine): #question 4
     return True, historique
 
 def affiche_config(configurations): #question 5
-    for i in range (len(configurations)):
+    for i in range(len(configurations)):
         config = configurations[i]
         print(f"étape {i} : {config}")
-
 
