@@ -187,3 +187,5 @@ def affiche_config(configurations): #question 5
         print(f"étape {i} : {config}")
 
 
+
+
