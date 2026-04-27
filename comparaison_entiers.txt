@@ -1,5 +1,5 @@
 // Comparaison de deux nombres binaires
-// Input : x#y (deux nombres en binaire séparés par #)
+// Input : x#y, deux nombres en binaire séparés par #
 // Output : accepte si x < y, boucle infiniment sinon
 // Examples : "1#11" -> accepte (1 < 3)
 //            "11#1" -> boucle (2 ≥ 1)  
