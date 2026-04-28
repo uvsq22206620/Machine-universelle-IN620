@@ -1,26 +1,34 @@
-name: find w in x
-init: I
-accept: F
+//Recherche dans une liste
+//input : x#w1#w2#...#wl, ou x est le mot à retrouver, w1,...,wl les mots de la liste
+//output : accepte si x = wi pour au moins un wi, boucle infiniment sinon
+//Examples : "101#101#110" -> accepte (101 = 101)
+             "110#101#110" -> accepte (110 = 110)
+             "111#101#110" -> boucle (111 != 101 et 111 != 110)
 
-I,0,_
-I,0,_,>,-
 
-I,1,_
-I,1,_,>,-
+name: Recherche dans une liste 
+init: q0
+accept: qAccept
 
-I,#,_
-Copie,_,#,>,>
+q0,0,_
+q0,0,_,>,-
 
-Copie,1,_
-Copie,_,1,>,>
+q0,1,_
+q0,1,_,>,-
 
-Copie,0,_
-Copie,_,0,>,>
+q0,#,_
+copiemot,_,#,>,>
 
-Copie,#,_
-Copie,_,#,>,>
+copiemot,1,_
+copiemot,_,1,>,>
 
-Copie,_,_
+copiemot,0,_
+copiemot,_,0,>,>
+
+copiemot,#,_
+copiemot,_,#,>,>
+
+copiemot,_,_
 Retour12,_,_,<,-
 
 Retour12,_,_
@@ -60,10 +68,10 @@ Start,0,#
 Compare,0,#,-,>
 
 Compare,1,0
-Fault,1,0,-,<
+qReject,1,0,-,<
 
 Compare,0,1
-Fault,0,1,-,<
+qReject,0,1,-,<
 
 Compare,1,1
 Compare,1,1,>,>
@@ -71,22 +79,22 @@ Compare,1,1,>,>
 Compare,0,0
 Compare,0,0,>,>
 
-Fault,1,0
-Fault,1,0,<,<
+qReject,1,0
+qReject,1,0,<,<
 
-Fault,1,1
-Fault,1,1,<,<
+qReject,1,1
+qReject,1,1,<,<
 
-Fault,0,0
-Fault,0,0,<,<
+qReject,0,0
+qReject,0,0,<,<
 
-Fault,0,1
-Fault,0,1,<,<
+qReject,0,1
+qReject,0,1,<,<
 
-Fault,0,#
+qReject,0,#
 Compare,0,#,>,>
 
-Fault,1,#
+qReject,1,#
 Compare,1,#,>,>
 
 Compare,_,1
@@ -114,19 +122,19 @@ RetourN,_,#
 Compare,_,#,>,>
 
 Compare,1,#
-F,1,#,-,-
+qAccept,1,#,-,-
 
 Compare,0,#
-F,0,#,-,-
+qAccept,0,#,-,-
 
 Compare,1,_
-F,1,_,-,-
+qAccept,1,_,-,-
 
 Compare,0,_
-F,0,_,-,-
+qAccept,0,_,-,-
 
 Compare,_,_
-F,_,_,-,-
+qAccept,_,_,-,-
 
 Compare,_,#
-F,_,#,-,-
+qAccept,_,#,-,-
