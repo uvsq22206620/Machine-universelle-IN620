@@ -89,5 +89,12 @@ class TestQ6(unittest.TestCase):
         accepte2, _ = simulation("0#1", machine)
         self.assertFalse(accepte2, "0#1 : 1 non trouvé devrait être rejeté")
 
+    def test_multiplication(self):
+        machine = init_mt("mult_unaire.txt")
+        accepte, _ = simulation("11#11", machine)
+        self.assertTrue(accepte, "sortie = 1111")
+
+        
+
 if __name__ =='__main__':
     unittest.main()
