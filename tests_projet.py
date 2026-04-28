@@ -71,23 +71,22 @@ class TestQ6(unittest.TestCase):
     def test_comparaison_entiers(self):
         machine = init_mt("comparaison_entiers.txt")
         accepte1, _ = simulation("1#11", machine)
-        self.assertTrue(accepte1, "1#11 : 1 < 3 devrait être true")
+        self.assertTrue(accepte1, "1#11 : 1 < 3, true")
     
     #def test_comparaison_entiers_rejet(self):
     #    machine = init_mt("comparaison_entiers.txt")
     #    accepte2, _ = simulation("11#1", machine)
-    #    self.assertFalse(accepte2, "11#1 : 2 >= 1 devrait être rejeté")
+    #    self.assertFalse(accepte2, "11#1 : 2 >= 1, boucle")
 
     def test_recherche_liste(self):
         machine = init_mt("rech_liste.txt")
-        # accepte si l'élément est trouvé
         accepte1, _ = simulation("11#1", machine)
-        self.assertTrue(accepte1, "11#1 : 1 trouvé devrait être true")
+        self.assertTrue(accepte1, "11#1 : 1, true")
 
     #def test_recherche_liste_rejet(self):
     #    machine = init_mt("rech_liste.txt")
     #    accepte2, _ = simulation("0#1", machine)
-    #    self.assertFalse(accepte2, "0#1 : 1 non trouvé devrait être rejeté")
+    #    self.assertFalse(accepte2, "0#1 : 1, boucle")
 
     def test_multiplication(self):
         machine = init_mt("mult_unaire.txt")

@@ -17,124 +17,124 @@ q0,1,_
 q0,1,_,>,-
 
 q0,#,_
-copiemot,_,#,>,>
+q1,_,#,>,>
 
-copiemot,1,_
-copiemot,_,1,>,>
+q1,1,_
+q1,_,1,>,>
 
-copiemot,0,_
-copiemot,_,0,>,>
+q1,0,_
+q1,_,0,>,>
 
-copiemot,#,_
-copiemot,_,#,>,>
+q1,#,_
+q1,_,#,>,>
 
-copiemot,_,_
-Retour12,_,_,<,-
+q1,_,_
+q2,_,_,<,-
 
-Retour12,_,_
-Retour12,_,_,<,-
+q2,_,_
+q2,_,_,<,-
 
-Retour12,1,_
-Retour22,1,_,<,-
+q2,1,_
+q3,1,_,<,-
 
-Retour12,0,_
-Retour22,0,_,<,-
+q2,0,_
+q3,0,_,<,-
 
-Retour22,0,_
-Retour22,0,_,<,-
+q3,0,_
+q3,0,_,<,-
 
-Retour22,1,_
-Retour22,1,_,<,-
+q3,1,_
+q3,1,_,<,-
 
-Retour22,_,_
-Retour2,_,_,-,<
+q3,_,_
+q4,_,_,-,<
 
-Retour2,_,1
-Retour2,_,1,-,<
+q4,_,1
+q4,_,1,-,<
 
-Retour2,_,0
-Retour2,_,0,-,<
+q4,_,0
+q4,_,0,-,<
 
-Retour2,_,#
-Retour2,_,#,-,<
+q4,_,#
+q4,_,#,-,<
 
-Retour2,_,_
-Start,_,_,>,>
+q4,_,_
+q5,_,_,>,>
 
-Start,1,#
-Compare,1,#,-,>
+q5,1,#
+q6,1,#,-,>
 
-Start,0,#
-Compare,0,#,-,>
+q5,0,#
+q6,0,#,-,>
 
-Compare,1,0
-qReject,1,0,-,<
+q6,1,0
+q7,1,0,-,<
 
-Compare,0,1
-qReject,0,1,-,<
+q6,0,1
+q7,0,1,-,<
 
-Compare,1,1
-Compare,1,1,>,>
+q6,1,1
+q6,1,1,>,>
 
-Compare,0,0
-Compare,0,0,>,>
+q6,0,0
+q6,0,0,>,>
 
-qReject,1,0
-qReject,1,0,<,<
+q7,1,0
+q7,1,0,<,<
 
-qReject,1,1
-qReject,1,1,<,<
+q7,1,1
+q7,1,1,<,<
 
-qReject,0,0
-qReject,0,0,<,<
+q7,0,0
+q7,0,0,<,<
 
-qReject,0,1
-qReject,0,1,<,<
+q7,0,1
+q7,0,1,<,<
 
-qReject,0,#
-Compare,0,#,>,>
+q7,0,#
+q6,0,#,>,>
 
-qReject,1,#
-Compare,1,#,>,>
+q7,1,#
+q6,1,#,>,>
 
-Compare,_,1
-Next,_,1,-,>
+q6,_,1
+q8,_,1,-,>
 
-Compare,_,0
-Next,_,0,-,>
+q6,_,0
+q8,_,0,-,>
 
-Next,_,0
-Next,_,0,-,>
+q8,_,0
+q8,_,0,-,>
 
-Next,_,1
-Next,_,1,-,>
+q8,_,1
+q8,_,1,-,>
 
-Next,_,#
-RetourN,_,#,<,-
+q8,_,#
+q9,_,#,<,-
 
-RetourN,1,#
-RetourN,1,#,<,-
+q9,1,#
+q9,1,#,<,-
 
-RetourN,0,#
-RetourN,0,#,<,-
+q9,0,#
+q9,0,#,<,-
 
-RetourN,_,#
-Compare,_,#,>,>
+q9,_,#
+q6,_,#,>,>
 
-Compare,1,#
+q6,1,#
 qAccept,1,#,-,-
 
-Compare,0,#
+q6,0,#
 qAccept,0,#,-,-
 
-Compare,1,_
+q6,1,_
 qAccept,1,_,-,-
 
-Compare,0,_
+q6,0,_
 qAccept,0,_,-,-
 
-Compare,_,_
+q6,_,_
 qAccept,_,_,-,-
 
-Compare,_,#
+q6,_,#
 qAccept,_,#,-,-
