@@ -187,5 +187,122 @@ def affiche_config(configurations): #question 5
         print(f"étape {i} : {config}")
 
 
+def MT_uni(nom_fichier): # Q7
+    n = init_mt(nom_fichier)
+
+    etats = set() #Collecte des états
+    for (etat, _), (etat_suivant,_,_) in n.transition.items():
+        etats.add(etat)
+        etats.add(etat_suivant)
+
+    mapping = {} # Mapping des états vers des codes binaires
+    mapping[n.etat_init] = "0"
+    mapping[n.etat_final] = "1"
+
+    compteur = 0
+    for etat in etats:
+        if etat not in mapping:
+            mapping[etat] = bin(compteur)[2:].zfill(2)
+            compteur += 1
+    
+    transition_codees=[] # Liste des transitions codées
+
+    for (etat, symbole_lu), (etat_suivant, symbole_ecrit, directions) in n.transition.items():
+        etat_code = mapping[etat]
+        etat_suivant_code = mapping[etat_suivant]
+        sym_lu = symbole_lu[0]
+        sym_ecrit = symbole_ecrit[0]
+        direction = directions[0]
+        if direction == "R":
+                direction_codee = ">"
+        elif direction == "L":
+                direction_codee = "<"
+        else:
+                direction_codee = "-"
+        
+        transition_codee = f"{etat_code}|{sym_lu}|{sym_ecrit}|{direction_codee}|{etat_suivant_code}"
+        transition_codees.append (transition_codee)
+    
+    return "|".join(transition_codees)
+
+def MT_conversion(nom_fichier): #Q8
+    code = MT_uni(nom_fichier)
+
+    res = ""
+    for char in code:
+        res += bin(ord(char))[2:].zfill(8) # Convertit chaque caractère en binaire sur 8 bits et les concatène
+    
+    res_ent = int(res, 2) # Convertit la chaîne de binaire en entier
+    return code, res, res_ent
+
+'''def MT_uni_3b(entree):  # Q9 corrigée
+    code_m, x = entree.split("#", 1)
+
+    ruban1 = list(code_m)
+    ruban2 = list("0")  # état initial
+    ruban3 = list(x)
+
+    pos3 = 0  # tête sur ruban 3
+
+    # découpage des transitions
+    elements = code_m.split("|")
+
+    transitions = []
+    for i in range(0, len(elements), 5):
+        transitions.append({
+            "etat": elements[i],
+            "lu": elements[i+1],
+            "ecrit": elements[i+2],
+            "dir": elements[i+3],
+            "suivant": elements[i+4]
+        })
+
+    historique = []
+
+    while True:
+        # sécuriser le ruban
+        if pos3 >= len(ruban3):
+            ruban3.append('_')
+        if pos3 < 0:
+            ruban3.insert(0, '_')
+            pos3 = 0
+
+        symbole = ruban3[pos3]
+        etat = ''.join(ruban2)
+
+        # sauvegarde config
+        historique.append(Configuration(
+            etat=etat,
+            positions=[0, 0, pos3],
+            rubans=[ruban1.copy(), ruban2.copy(), ruban3.copy()]
+        ))
+
+        # état final
+        if etat == "1":
+            return True, historique
+
+        # chercher transition
+        trouve = False
+        for t in transitions:
+            if t["etat"] == etat and t["lu"] == symbole:
+                trouve = True
+
+                # appliquer
+                ruban2 = list(t["suivant"])
+                ruban3[pos3] = t["ecrit"]
+
+                if t["dir"] == ">":
+                    pos3 += 1
+                elif t["dir"] == "<":
+                    pos3 -= 1
+
+                break
+
+        if not trouve:
+            return False, historique
 
 
+code = MT_uni("echange_bits.txt")
+accepte, historique = MT_uni_3b(code + "#010")
+print("Accepté :", accepte)
+affiche_config(historique)'''

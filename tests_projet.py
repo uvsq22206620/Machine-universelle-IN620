@@ -1,8 +1,9 @@
 import unittest 
-from code import  Configuration, MT, init_mt, config_init, pas_calcul, simulation, affiche_config
+from code import  Configuration, MT, init_mt, config_init, pas_calcul, simulation, affiche_config, MT_uni, MT_conversion, MT_uni_3b
+
 
 class TestQ1(unittest.TestCase):
-    def test_MT(self):
+    def test(self):
         mt = MT(
             alphabet = ['0', '1'],
             alphabet_travail = ['0', '1', '_'],
@@ -93,7 +94,42 @@ class TestQ6(unittest.TestCase):
         accepte, _ = simulation("11#11", machine)
         self.assertTrue(accepte, "sortie = 1111")
 
-        
+class TestQ7(unittest.TestCase):
+    def test_uni_type(self):
+        resultat = MT_uni("division3.txt")
+        self.assertIsInstance(resultat, str)
+    
+    def test_uni_contient_pipe(self):
+        resultat = MT_uni("division3.txt")
+        self.assertIn("|", resultat)
+    
+    def test_uni_commence_par_0(self):
+        resultat = MT_uni("division3.txt")
+        self.assertTrue(resultat.startswith("0"))
+
+class TestQ8(unittest.TestCase):
+    def test_conversion_binaire(self):
+        code, binaire, entier = MT_conversion("division3.txt")
+        self.assertIsInstance(binaire, str)
+    
+    def test_conversion_que_01(self):
+        code, binaire, entier = MT_conversion("division3.txt")
+        self.assertTrue(all(c in "01" for c in binaire))
+    
+    def test_conversion_entier(self):
+        code, binaire, entier = MT_conversion("division3.txt")
+        self.assertIsInstance(entier, int)
+
+'''class TestQ9(unittest.TestCase):
+    def test_machine_universelle_accepte(self):
+        code = MT_uni("echange_bits.txt")
+        accepte, _ = MT_uni_3b(code + "#010")
+        self.assertTrue(accepte)
+    
+    def test_machine_universelle_historique(self):
+        code = MT_uni("echange_bits.txt")
+        accepte, historique = MT_uni_3b(code + "#010")
+        self.assertGreater(len(historique), 0)       ''' 
 
 if __name__ =='__main__':
     unittest.main(verbosity=2)
