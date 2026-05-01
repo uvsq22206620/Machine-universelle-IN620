@@ -235,7 +235,7 @@ def MT_conversion(nom_fichier): #Q8
     res_ent = int(res, 2) # Convertit la chaîne de binaire en entier
     return code, res, res_ent
 
-'''def MT_uni_3b(entree):  # Q9 corrigée
+def MT_uni_3b(entree):  # Q9 
     code_m, x = entree.split("#", 1)
 
     ruban1 = list(code_m)
@@ -257,10 +257,10 @@ def MT_conversion(nom_fichier): #Q8
             "suivant": elements[i+4]
         })
 
-    historique = []
+    historique = [] # Liste des config
 
     while True:
-        # sécuriser le ruban
+        # Extension du ruban 3 si la tête dépasse les bords
         if pos3 >= len(ruban3):
             ruban3.append('_')
         if pos3 < 0:
@@ -302,7 +302,88 @@ def MT_conversion(nom_fichier): #Q8
             return False, historique
 
 
+def MT_uni_4b(entree):  # Q9 
+    code_m, x, n = entree.split("#", 2)
+    n = int(n)
+    ruban1 = list(code_m)
+    ruban2 = list("0")  # état initial
+    ruban3 = list(x)
+    ruban4 = list(str(n))  # ruban pour n
+
+    pos3 = 0  # tête sur ruban 3
+    pos4 = 0  # tête sur ruban 4
+
+    # découpage des transitions
+    elements = code_m.split("|")
+    transitions = []
+    for i in range(0, len(elements), 5):
+        transitions.append({
+            "etat": elements[i],
+            "lu": elements[i+1],
+            "ecrit": elements[i+2],
+            "dir": elements[i+3],
+            "suivant": elements[i+4]
+        })
+    historique = [] # Liste des config
+    
+    while n > 0 :
+        # Extension du ruban 3 si la tête dépasse les bords
+        if pos3 >= len(ruban3):
+            ruban3.append('_')
+        if pos3 < 0:
+            ruban3.insert(0, '_')
+            pos3 = 0
+
+        symbole = ruban3[pos3]
+        etat = ''.join(ruban2)
+
+        # sauvegarde config
+        historique.append(Configuration(
+            etat=etat,
+            positions=[0, 0, pos3, pos4],
+            rubans=[ruban1.copy(), ruban2.copy(), ruban3.copy(), ruban4.copy()]
+        ))
+
+        # état final
+        if etat == "1":
+            return True, historique
+
+        # chercher transition
+        trouve = False
+        for t in transitions:
+            if t["etat"] == etat and t["lu"] == symbole:
+                trouve = True
+
+                # appliquer
+                ruban2 = list(t["suivant"])
+                ruban3[pos3] = t["ecrit"]
+
+                if t["dir"] == ">":
+                    pos3 += 1
+                elif t["dir"] == "<":
+                    pos3 -= 1
+
+                break
+
+        if not trouve:
+            return False, historique
+        
+        n -= 1
+        ruban4 = list(str(n))  # mise à jour du ruban compteur
+
+    return False, historique  # n étapes écoulées sans accepter
+    
+    
+
+
+
+
+
+
+
+
+
 code = MT_uni("echange_bits.txt")
-accepte, historique = MT_uni_3b(code + "#010")
+accepte, historique = MT_uni_4b(code + "#010#3")
 print("Accepté :", accepte)
-affiche_config(historique)'''
+affiche_config(historique)

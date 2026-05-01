@@ -1,5 +1,5 @@
 import unittest 
-from code import  Configuration, MT, init_mt, config_init, pas_calcul, simulation, affiche_config, MT_uni, MT_conversion, MT_uni_3b
+from code import  Configuration, MT, init_mt, config_init, pas_calcul, simulation, affiche_config, MT_uni, MT_conversion, MT_uni_3b, MT_uni_4b
 
 
 class TestQ1(unittest.TestCase):
@@ -120,16 +120,27 @@ class TestQ8(unittest.TestCase):
         code, binaire, entier = MT_conversion("division3.txt")
         self.assertIsInstance(entier, int)
 
-'''class TestQ9(unittest.TestCase):
-    def test_machine_universelle_accepte(self):
+class TestQ9(unittest.TestCase):
+    def test_accepte(self):
         code = MT_uni("echange_bits.txt")
         accepte, _ = MT_uni_3b(code + "#010")
         self.assertTrue(accepte)
     
-    def test_machine_universelle_historique(self):
+    def test_historique(self):
         code = MT_uni("echange_bits.txt")
         accepte, historique = MT_uni_3b(code + "#010")
-        self.assertGreater(len(historique), 0)       ''' 
+        self.assertGreater(len(historique), 0)  
+
+class TestQ10(unittest.TestCase):
+    def test_accepte_avec_assez_detapes(self):
+        code = MT_uni("echange_bits.txt")
+        accepte, _ = MT_uni_4b(code + "#010#5")  # 5 étapes devraient être suffisantes
+        self.assertTrue(accepte)
+    
+    def test_refuse_avec_trop_peu_detapes(self):
+        code = MT_uni("echange_bits.txt")
+        accepte, _ = MT_uni_4b(code + "#010#3")  # 3 étapes ne devraient pas être suffisantes
+        self.assertFalse(accepte)
 
 if __name__ =='__main__':
     unittest.main(verbosity=2)
