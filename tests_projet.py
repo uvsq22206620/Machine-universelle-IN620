@@ -1,5 +1,5 @@
 import unittest 
-from code import  Configuration, MT, init_mt, config_init, pas_calcul, simulation, affiche_config, MT_uni, MT_conversion, MT_uni_3b, MT_uni_4b
+from code import Configuration, MT, init_mt, config_init, pas_calcul, simulation, affiche_config, MT_uni, MT_conversion, MT_uni_3b, MT_uni_4b
 
 
 class TestQ1(unittest.TestCase):

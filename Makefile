@@ -11,8 +11,8 @@ help:
 	@echo "make test-q8 - test question 8 "
 	@echo "make test-q9 - test question 9 "
 	@echo "make test-q10 - test question 10 "	
-	@echo "make test - execution de tous les tests"
-	@echo "make clean - Nettoie"
+	@echo "make all - execution de tous les tests"
+	@echo "make clean - nettoie le cache"
 
 all : test-q1 test-q2 test-q3 test-q4 test-q5 test-q6 test-q7 test-q8 test-q9 test-q10
 
