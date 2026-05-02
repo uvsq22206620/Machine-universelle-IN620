@@ -1,4 +1,4 @@
-.PHONY: all help test test-q1 test-q2 test-q3 test-q4 test-q5 test-q6 test-q7 test-q8 test-q9 test-q10 clean
+.PHONY: all help test-q1 test-q2 test-q3 test-q4 test-q5 test-q6 test-q7 test-q8 test-q9 test-q10 clean
 
 help:
 	@echo "make test-q1 - test question 1 "
@@ -55,3 +55,6 @@ test-q9 :
 test-q10 : 
 	@echo "question 10 : \n"
 	python -m unittest tests_projet.TestQ10 -v
+
+clean:
+	rm -rf __pycache__

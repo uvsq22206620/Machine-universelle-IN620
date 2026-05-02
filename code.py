@@ -39,7 +39,7 @@ def init_mt(nom_fichier): #question 2
     
     transitions = {} #dico de transitions, clé = (etat, symbole_lu), valeur = (etat_suivant, symbole_ecrit, direction)
     i = 0
-    nb_rubans = None # mettre 0 comme c un nombre? 
+    nb_rubans = None 
 
     while i < len(lignes_propres): #
         ligne = lignes_propres[i]
@@ -88,13 +88,12 @@ def init_mt(nom_fichier): #question 2
         nb_rubans = 1
     
     alphabet = set() #creation de l'alphabet et de l'alphabet de travail à partir des transitions
-    alphabet_travail = set()
+    alphabet_travail = {'0','1','#','|','_'}
     
-    for (etat, symbole_lu), (etat_suivant, symbole_ecrit, directions) in transitions.items(): #on parcourt les transitions, on ajoute les symboles lus/écrits dans les alpabets respectifs
+    for (etat, symbole_lu), _ in transitions.items(): #on parcourt les transitions, on ajoute les symboles lus/écrits dans les alpabets respectifs
         for sym in symbole_lu:
-            alphabet_travail.add(sym)
-        for sym in symbole_ecrit:
-            alphabet_travail.add(sym)
+            if sym != '_':
+                alphabet.add(sym)
     
     alphabet = alphabet_travail.copy() 
     
@@ -301,7 +300,7 @@ def MT_uni_3b(entree):  # Q9
             return False, historique
 
 
-def MT_uni_4b(entree):  # Q9 
+def MT_uni_4b(entree):  # Q10
     code_m, x, n = entree.split("#", 2)
     n = int(n)
     ruban1 = list(code_m)
