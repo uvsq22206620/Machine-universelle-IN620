@@ -94,9 +94,7 @@ def init_mt(nom_fichier): #question 2
         for sym in symbole_lu:
             if sym != '_':
                 alphabet.add(sym)
-    
-    alphabet = alphabet_travail.copy() 
-    
+        
     return MT( # retourne une instance de la classe MT avec les éléments du fichier
         alphabet=list(alphabet),
         alphabet_travail=list(alphabet_travail),
@@ -149,7 +147,6 @@ def pas_calcul(machine, configuration): #question 3
         if nv_positions[i] < len(nv_rubans[i]):
             nv_rubans[i][nv_positions[i]] = symbole_ecrit[i]
         
-        nv_pos = nv_positions[i]
         if direction[i] == "R":
             nv_positions[i] += 1
         elif direction[i] == "L":
