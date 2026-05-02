@@ -18,7 +18,6 @@ class MT:
 
 
 def init_mt(nom_fichier): #question 2
-
     with open(nom_fichier, "r") as fichier:
         lignes = fichier.readlines()
     
@@ -40,7 +39,7 @@ def init_mt(nom_fichier): #question 2
     
     transitions = {} #dico de transitions, clé = (etat, symbole_lu), valeur = (etat_suivant, symbole_ecrit, direction)
     i = 0
-    nb_rubans = None
+    nb_rubans = None # mettre 0 comme c un nombre? 
 
     while i < len(lignes_propres): #
         ligne = lignes_propres[i]
@@ -49,7 +48,7 @@ def init_mt(nom_fichier): #question 2
             i += 1
             continue
         
-        if "," in ligne: #si la ligne contient une virgule, c'est une ligne de transition
+        if "," in ligne: #si la ligne contient une virgule, c'est que c'est une ligne de transition
             partie_lue = ligne.split(",") 
 
             if nb_rubans is None : 
@@ -383,7 +382,7 @@ def MT_uni_4b(entree):  # Q9
 
 
 
-code = MT_uni("echange_bits.txt")
-accepte, historique = MT_uni_4b(code + "#010#3")
-print("Accepté :", accepte)
-affiche_config(historique)
+#code = MT_uni("echange_bits.txt")
+#accepte, historique = MT_uni_4b(code + "#010#3")
+#print("Accepté :", accepte)
+#affiche_config(historique)

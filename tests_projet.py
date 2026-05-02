@@ -12,6 +12,13 @@ class TestQ1(unittest.TestCase):
             etat_final = "qf",
             nb_rubans = 1
         )
+        print("\n")
+        print(f"alphabet : {mt.alphabet}")
+        print(f"alphabet de travail : {mt.alphabet_travail}")
+        print(f"transitions : {mt.transition}")
+        print(f"état initial : {mt.etat_init}")        
+        print(f"état final : {mt.etat_final}")
+        print(f"nombre de rubans : {mt.nb_rubans} ")
         self.assertEqual(mt.etat_init, "q0")
         self.assertEqual(mt.etat_final, "qf")
         self.assertEqual(mt.nb_rubans, 1)
@@ -22,6 +29,10 @@ class TestQ1(unittest.TestCase):
             positions = [0],
             rubans = [['a', 'b']]
         )
+        print("\n")
+        print(f"état : {config.etat}")        
+        print(f"position : {config.positions}")
+        print(f"rubans : {config.rubans} ")
         self.assertEqual(config.etat, "q0")
         self.assertEqual(config.positions, [0])
         self.assertEqual(config.rubans, [['a', 'b']])
@@ -29,12 +40,19 @@ class TestQ1(unittest.TestCase):
 class TestQ2(unittest.TestCase):
     def test_init_mt(self):
         machine = init_mt("division3.txt")
+        print("\n")
+        print(f"état initial : {machine.etat_init}")        
+        print(f"état final : {machine.etat_final}")
         self.assertIsNotNone(machine.etat_init)
         self.assertIsNotNone(machine.etat_final)
 
     def test_config_init(self):
         machine = init_mt("division3.txt")
         config = config_init(machine, "110")
+        print("\n")
+        print(f"état : {config.etat}")        
+        print(f"position : {config.positions}")
+        print(f"rubans : {config.rubans} ")
         self.assertEqual(config.etat, machine.etat_init)
         self.assertEqual(config.positions[0], 0)
         self.assertEqual(config.rubans[0], ['1', '1', '0'])       
@@ -44,7 +62,10 @@ class TestQ3(unittest.TestCase):
     def test_pas_calcul(self):
         machine = init_mt("division3.txt")
         config = config_init(machine, "110")
+        print("\n")
+        print(f"configuration : {config}")
         config_suivante = pas_calcul(machine, config)
+        print(f"configuration suivante : {config_suivante}")
         self.assertIsNotNone(config_suivante)
 
 
@@ -52,19 +73,23 @@ class TestQ4(unittest.TestCase):
     def test_simulation_accepte(self):
         machine = init_mt("division3.txt")
         accepte, historique = simulation("110", machine)
+        print(f"nombre d'étapes: {len(historique)}")
         self.assertTrue(accepte)
     
     def test_simulation_rejette(self):
         machine = init_mt("division3.txt")
         accepte, historique = simulation("1", machine)
+        print(f"nombre d'étapes: {len(historique)}")
         self.assertFalse(accepte)
 
 class TestQ5(unittest.TestCase):
     def test_affiche_config(self):
         machine = init_mt("division3.txt")
         accepte, historique = simulation("110", machine)
+        print("\n")
         try:
             affiche_config(historique)
+            print(f"nombre d'étapes: {len(historique)}")
         except Exception:
             self.fail("affiche_config() ne doit pas lever une exception")
 
