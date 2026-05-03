@@ -96,32 +96,65 @@ class TestQ5(unittest.TestCase):
 class TestQ6(unittest.TestCase):
     def test_comparaison_entiers(self):
         machine = init_mt("comparaison_entiers.txt")
-        accepte1, _ = simulation("1#11", machine)
+        print("\n")
+        print(f" état initial : {machine.etat_init}")
+        print(f" état final : {machine.etat_final}")
+        print(f" nb de transitions : {len(machine.transition)}")
+        accepte1, historique = simulation("1#11", machine)
+        print(f"acceptée : {accepte1}")
+        print(f"nombre d'étapes : {len(historique)}")
         self.assertTrue(accepte1, "1#11 : 1 < 3, true")
     
     #def test_comparaison_entiers_rejet(self):
-    #    machine = init_mt("comparaison_entiers.txt")
-    #    accepte2, _ = simulation("11#1", machine)
-    #    self.assertFalse(accepte2, "11#1 : 2 >= 1, boucle")
+    #   machine = init_mt("comparaison_entiers.txt")
+    #   print("\n")
+    #   print(f" état initial : {machine.etat_init}")
+    #   print(f" état final : {machine.etat_final}")
+    #   print(f" nb de transitions : {len(machine.transition)}")
+    #   accepte2, historique = simulation("11#1", machine)
+    #   print(f"acceptée {accepte1}")
+    #   print(f"nombre d'étapes : {len(historique)}")
+    #   self.assertFalse(accepte2, "11#1 : 2 >= 1, boucle")
 
     def test_recherche_liste(self):
         machine = init_mt("rech_liste.txt")
-        accepte1, _ = simulation("11#1", machine)
+        print("\n")
+        print(f" état initial : {machine.etat_init}")
+        print(f" état final : {machine.etat_final}")
+        print(f" nb de transitions : {len(machine.transition)}")        
+        accepte1, historique = simulation("11#1", machine)
+        print(f"acceptée : {accepte1}")
+        print(f"nombre d'étapes : {len(historique)}")
         self.assertTrue(accepte1, "11#1 : 1, true")
 
     #def test_recherche_liste_rejet(self):
-    #    machine = init_mt("rech_liste.txt")
-    #    accepte2, _ = simulation("0#1", machine)
-    #    self.assertFalse(accepte2, "0#1 : 1, boucle")
+    #   machine = init_mt("rech_liste.txt")
+    #   print("\n")
+    #   print(f" état initial : {machine.etat_init}")
+    #   print(f" état final : {machine.etat_final}")
+    #   print(f" nb de transitions : {len(machine.transition)}")
+    #   accepte2, historique = simulation("0#1", machine)
+    #   print(f"acceptée {accepte1}")
+    #   print(f"nombre d'étapes : {len(historique)}")
+    #   self.assertFalse(accepte2, "0#1 : 1, boucle")
 
     def test_multiplication(self):
         machine = init_mt("mult_unaire.txt")
-        accepte, _ = simulation("11#11", machine)
+        print("\n")
+        print(f" état initial : {machine.etat_init}")
+        print(f" état final : {machine.etat_final}")
+        print(f" nb de transitions : {len(machine.transition)}")   
+        accepte, historique = simulation("11#11", machine)
+        print(f"acceptée : {accepte}")
+        print(f"nombre d'étapes : {len(historique)}")
         self.assertTrue(accepte, "sortie = 1111")
 
 class TestQ7(unittest.TestCase):
     def test_uni_type(self):
         resultat = MT_uni("division3.txt")
+        print("\n")
+        print(f"type : {type(resultat).__name__}")
+        print(f"longueur: {len(resultat)} caractères")
         self.assertIsInstance(resultat, str)
     
     def test_uni_contient_pipe(self):
