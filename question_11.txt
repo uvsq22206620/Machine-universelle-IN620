@@ -1,0 +1,54 @@
+Question 11 : Pour les langages suivants, prouver s'ils sont décidables ou non décidables.
+
+L1 = { < M > #n | M s'arrête sur n en moins de n étapes} : L1 est décidable.
+
+Avec la question 10, nous disposons d'une machine universelle a 4 rubans U4 qui, sur l'entrée <M>#x#k, 
+simule M sur x pendant au plus k étapes et s’arrête toujours (au pire après k pas, même si M boucle). 
+On construit la machine M1 qui décide L1 : 
+Sur une entrée <M>#n : 
+- Construire l’entrée <M>#n#n.
+- Lancer U4 sur cette entrée (simulation de M sur n pendant au plus n étapes).
+- Si U4 a atteint l’état final dans la limite des n étapes, ACCEPT.
+- Sinon REJECT.
+U4 termine toujours en au plus n étapes de simulation, donc M1 termine sur toute entrée. 
+Par conséquent L1 est décidable.
+
+
+
+
+L2 = {< M > #n | M s'arrête sur tous les mots de taille n} : L2 est indécidable.
+
+Supposons que L2 est décidable par la machine de turing universelle M2. On construit la machine H qui reconnait HALT.
+Sur une entrée (<M>, w), on construit <M’> qui fonctionne ainsi :
+- Efface son entrée
+- Écrit w sur le ruban
+- Simule M sur w
+On exécute M2 sur (<M’>, 0). Si M2 accepte alors ACCEPT, sinon REJECT.
+
+Montrons que H reconnait HALT : 
+Si (<M>, w) ∈ HALT, alors M s’arrête sur w. Comme M’ ignore son entrée et simule M sur w, M’
+s’arrête sur toutes ses entrées, en particulier sur l’unique mot de taille 0 (le mot vide ε). 
+Donc (<M’>, 0) ∈ L2, M2 accepte et par construction H accepte (<M>, w).
+Si (<M>, w) ∉ HALT, M ne s’arrête pas sur w. M’ ne s’arrête donc sur aucune entrée, en particulier pas sur ε. 
+Donc (<M’>, 0) ∉ L2, M2 rejette et H rejette (<M>, w).
+On a montré que HALT serait décidable, mais c'est une contradiction car HALT est indécidable (théorème vu en cours). 
+L2 est alors indécidable.
+
+
+
+
+L3 = {< M >#x#y | M calcule la même chose sur x et y } : L3 est indécidable.
+
+Supposons que L3 est décidable par la machine de Turing universelle M3. On construit la machine H qui reconnait HALT.
+Sur une entrée (<M>, w), on construit <M’> qui fonctionne ainsi :
+- Si l’entrée est 0 : écrit 1 sur la bande et s’arrête
+- Si l’entrée est 1 : simule M sur w ; si M s’arrête, écrit 1 et s’arrête
+On exécute M3 sur (<M’>, 0, 1). Si M3 accepte alors ACCEPT, sinon REJECT.
+
+Montrons que H reconnait HALT : 
+Si (<M>, w) ∈ HALT, alors M s’arrête sur w. Donc M’(0) = 1 et M’(1) = 1 : M’ calcule la même chose sur 0 et 1. 
+Donc (<M’>, 0, 1) ∈ L3, M3 accepte et H accepte (<M>, w).
+Si (<M>, w) ∉ HALT, M ne s’arrête pas sur w. Donc M’(0) = 1 mais M’(1) est indéfini (M’ boucle sur 1).
+M’ ne calcule pas la même chose sur 0 et 1, donc (<M’>, 0, 1) ∉ L3, M3 rejette et H rejette (<M>, w).
+On a montré que HALT serait décidable, mais c'est une contradiction car HALT est indécidable (théorème vu en cours).
+L3 est alors indécidable.
