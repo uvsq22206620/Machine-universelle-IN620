@@ -6,7 +6,7 @@ class TestQ1(unittest.TestCase):
     def test(self):
         mt = MT(
             alphabet = ['0', '1'],
-            alphabet_travail = ['0', '1', '_'],
+            alphabet_travail = ['0', '1', '#', '|' ,'_'],
             transition = {},
             etat_init = "q0",
             etat_final = "qf",
@@ -112,7 +112,7 @@ class TestQ6(unittest.TestCase):
     #   print(f" état final : {machine.etat_final}")
     #   print(f" nb de transitions : {len(machine.transition)}")
     #   accepte2, historique = simulation("11#1", machine)
-    #   print(f"acceptée {accepte1}")
+    #   print(f"acceptée {accepte2}")
     #   print(f"nombre d'étapes : {len(historique)}")
     #   self.assertFalse(accepte2, "11#1 : 2 >= 1, boucle")
 
@@ -134,7 +134,7 @@ class TestQ6(unittest.TestCase):
     #   print(f" état final : {machine.etat_final}")
     #   print(f" nb de transitions : {len(machine.transition)}")
     #   accepte2, historique = simulation("0#1", machine)
-    #   print(f"acceptée {accepte1}")
+    #   print(f"acceptée {accepte2}")
     #   print(f"nombre d'étapes : {len(historique)}")
     #   self.assertFalse(accepte2, "0#1 : 1, boucle")
 
